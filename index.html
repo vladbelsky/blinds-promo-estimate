@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дерев'яні та Бамбукові Жалюзі | Калькулятор Вартості</title>
+    <!-- Tailwind CSS for rapid modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Base Antigravity Theme Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #07070a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glowing Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: pulse-glow 8s ease-in-out infinite alternate;
+        }
+        .orb-emerald { background: #10b981; width: 40vw; height: 40vw; top: -10%; left: -10%; }
+        .orb-purple { background: #6366f1; width: 35vw; height: 35vw; top: 40%; right: -5%; }
+        .orb-amber { background: #d97706; width: 30vw; height: 30vw; bottom: -5%; left: 10%; }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.3; }
+            100% { transform: scale(1.1) translate(20px, -20px); opacity: 0.5; }
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-top: 1px solid rgba(255,255,255,0.15);
+            border-left: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 40px 70px -15px rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        /* Floating Animations (Antigravity Core) */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes float-slow {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-25px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating { animation: float 5s ease-in-out infinite; }
+        .floating-slow { animation: float-slow 7s ease-in-out infinite reverse; }
+        .floating-delay { animation: float 6s ease-in-out infinite 2s; }
+
+        /* Custom Input Fields */
+        .input-antigravity {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-antigravity:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+            background: rgba(0,0,0,0.7);
+        }
+
+        /* Glowing Button */
+        .btn-glow {
+            position: relative;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            z-index: 1;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-glow::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #34d399, #10b981);
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .btn-glow:hover::before { opacity: 1; }
+        .btn-glow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Dynamic Reveal CSS */
+        .reveal-hidden { display: none; }
+        .reveal-prepare { display: block; opacity: 0; transform: translateY(50px); }
+        .reveal-active { opacity: 1; transform: translateY(0); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked { right: 0; border-color: #10b981; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #10b981; }
+        .toggle-checkbox { right: 4px; z-index: 1; border-color: transparent; }
+        
+        /* Utility */
+        .text-gradient {
+            background: linear-gradient(to right, #6ee7b7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Ambient Background Orbs -->
+    <div class="orb orb-emerald"></div>
+    <div class="orb orb-purple"></div>
+    <div class="orb orb-amber"></div>
+
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 glass-card rounded-none border-t-0 border-l-0 border-r-0 bg-opacity-10 backdrop-blur-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-tighter flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-emerald-400"></i>
+                <span>Aero<span class="font-light">Blinds</span></span>
+            </div>
+            <a href="tel:+380000000000" class="text-sm md:text-base font-medium hover:text-emerald-400 transition">
+                <i class="fa-solid fa-phone mr-2"></i>+38 (099) 123 45 67
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6 min-h-[90vh] flex items-center relative z-10">
+        <div class="container mx-auto grid lg:grid-cols-2 gap-16 items-center">
+            <div class="max-w-2xl floating">
+                <div class="inline-block px-4 py-2 rounded-full glass-card text-xs font-semibold tracking-widest uppercase mb-6 text-emerald-300">
+                    Преміальний сонцезахист
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+                    Екологічні <br><span class="text-gradient">жалюзі на замовлення</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 mb-10 leading-relaxed max-w-lg">
+                    Дізнайтеся точну вартість дерев'яних або бамбукових жалюзі для вашого вікна всього за 1 хвилину. Без дзвінків та очікувань.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#calculator-section" class="btn-glow text-center px-8 py-4 rounded-xl font-bold text-lg tracking-wide uppercase">
+                        Розрахувати онлайн
+                    </a>
+                    <div class="flex items-center gap-4 text-sm text-gray-400 pl-4">
+                        <i class="fa-solid fa-check-circle text-emerald-500 text-xl"></i>
+                        <span>Ламелі 25мм та 50мм</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative floating-delay">
+                <div class="glass-card p-4 aspect-square rounded-[3rem] overflow-hidden relative group">
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/5515534567263003857_0" alt="Дерев'яні жалюзі в інтер'єрі" class="w-full h-full object-cover rounded-[2.5rem] group-hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-10 left-10 text-white font-medium">
+                        <p class="text-xl">Натуральне дерево</p>
+                        <p class="text-sm opacity-75">Колекція Nature, 50мм</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructions Section -->
+    <section class="py-20 px-6 relative z-10" id="instructions">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Як правильно зробити заміри?</h2>
+                <p class="text-gray-400 text-lg">Це займе лише хвилину. Оберіть зручний формат інструкції.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+                <!-- Video Thumbnail -->
+                <div class="relative rounded-3xl overflow-hidden glass-card aspect-video flex items-center justify-center group cursor-pointer floating">
+                    <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition duration-300 z-10"></div>
+                    <div class="w-20 h-20 rounded-full bg-emerald-500/90 flex items-center justify-center text-white pl-2 shadow-[0_0_30px_rgba(16,185,129,0.6)] group-hover:scale-110 transition duration-300 z-20">
+                        <i class="fa-solid fa-play text-3xl"></i>
+                    </div>
+                    <img src="http://googleusercontent.com/image_collection/image_retrieval/6547495229618173798_0" alt="Бамбукові жалюзі відеоінструкція" class="absolute inset-0 w-full h-full object-cover -z-0">
+                    <div class="absolute bottom-6 left-6 text-white font-medium drop-shadow-lg z-20">
+                        <i class="fa-solid fa-video mr-2"></i> Відеоінструкція (0:45)
+                    </div>
+                </div>
+
+                <!-- Text Instructions -->
+                <div class="space-y-6">
+                    <div class="glass-card p-6 flex gap-4 items-start">
+                        <div class="w-12 h-12 shrink-0 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold border border-emerald-500/30">1</div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Ширина (Ш)</h3>
+                            <p class="text-gray-400">Виміряйте відстань між зовнішніми краями штапика (рамки, яка тримає скло). Це буде точна ширина вашого виробу.</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex gap-4 items-start">
+                        <div class="w-12 h-12 shrink-0 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold border border-emerald-500/30">2</div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-2">Висота (В)</h3>
+                            <p class="text-gray-400">Виміряйте відстань від самого верхнього до самого нижнього краю віконної стулки (тієї частини, що відкривається).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="py-20 px-6 relative z-10" id="calculator-section">
+        <div class="container mx-auto">
+            <div class="max-w-4xl mx-auto glass-card p-10 md:p-16 relative floating-slow">
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500 rounded-full filter blur-[80px] opacity-20 pointer-events-none"></div>
+                
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center">Введіть розміри вашого вікна</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <div class="relative">
+                        <label class="block text-gray-300 mb-3 font-medium">Ширина вікна (у сантиметрах)</label>
+                        <div class="relative">
+                            <input type="number" id="calc-width" class="w-full pl-12 pr-5 py-4 rounded-xl input-antigravity text-2xl font-bold" placeholder="напр. 65.5" step="0.1">
+                            <i class="fa-solid fa-arrows-left-right absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-500"></i>
+                            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">см</span>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="block text-gray-300 mb-3 font-medium">Висота вікна (у сантиметрах)</label>
+                        <div class="relative">
+                            <input type="number" id="calc-height" class="w-full pl-12 pr-5 py-4 rounded-xl input-antigravity text-2xl font-bold" placeholder="напр. 140" step="0.1">
+                            <i class="fa-solid fa-arrows-up-down absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-500"></i>
+                            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">см</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="calculatePrice()" class="btn-glow px-12 py-5 rounded-2xl text-lg font-bold tracking-wider uppercase w-full md:w-auto shadow-xl">
+                        <i class="fa-solid fa-calculator mr-2"></i> Розрахувати вартість
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section (Hidden initially) -->
+    <section class="pb-20 px-6 relative z-10 reveal-hidden" id="results-section">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl font-bold mb-10 text-center text-gradient">Орієнтовна вартість ваших жалюзі:</h2>
+            
+            <!-- Result Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Card 1 -->
+                <div class="glass-card glass-card-hover p-6 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold border border-emerald-500/30">Еко Бамбук</span>
+                            <span class="text-gray-400 text-sm">Ламель 25мм</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Бамбук (25мм)</h3>
+                        <p class="text-sm text-gray-400 mb-6">Легкі, вологостійкі, ідеально для невеликих вікон.</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-400 mb-1">Ціна від:</p>
+                        <p class="text-3xl font-bold text-white"><span id="price-b25">0</span> <span class="text-emerald-500 text-xl">₴</span></p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card glass-card-hover p-6 flex flex-col justify-between h-full relative overflow-hidden">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-bold border border-amber-500/30">Преміум Дерево</span>
+                            <span class="text-gray-400 text-sm">Ламель 25мм</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Натуральне дерево (25мм)</h3>
+                        <p class="text-sm text-gray-400 mb-6">Класична текстура, глибокі кольори, статусний вигляд.</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-400 mb-1">Ціна від:</p>
+                        <p class="text-3xl font-bold text-white"><span id="price-w25">0</span> <span class="text-amber-500 text-xl">₴</span></p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card glass-card-hover p-6 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold border border-emerald-500/30">Еко Бамбук</span>
+                            <span class="text-gray-400 text-sm">Ламель 50мм</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Бамбук (50мм)</h3>
+                        <p class="text-sm text-gray-400 mb-6">Широка ламель візуально розширює простір кімнати.</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-400 mb-1">Ціна від:</p>
+                        <p class="text-3xl font-bold text-white"><span id="price-b50">0</span> <span class="text-emerald-500 text-xl">₴</span></p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="glass-card glass-card-hover p-6 flex flex-col justify-between h-full">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="px-3 py-1 bg-amber-500/20 text-amber-400 rounded-full text-xs font-bold border border-amber-500/30">Преміум Дерево</span>
+                            <span class="text-gray-400 text-sm">Ламель 50мм</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Натуральне дерево (50мм)</h3>
+                        <p class="text-sm text-gray-400 mb-6">Максимальна солідність та розкіш для великих отворів.</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-400 mb-1">Ціна від:</p>
+                        <p class="text-3xl font-bold text-white"><span id="price-w50">0</span> <span class="text-amber-500 text-xl">₴</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add-ons / Upsell Section -->
+            <div class="glass-card p-8 md:p-10 max-w-4xl mx-auto mb-16">
+                <h3 class="text-xl font-bold mb-6">Додаткові опції (враховуються в ціну миттєво):</h3>
+                <div class="space-y-6">
+                    <!-- Toggle 1 -->
+                    <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-tools"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-white">Професійний монтаж (+500 ₴)</p>
+                                <p class="text-sm text-gray-400">Встановлення майстром з гарантією 1 рік.</p>
+                            </div>
+                        </div>
+                        <div class="relative inline-block w-14 mr-2 align-middle select-none transition duration-200 ease-in shrink-0">
+                            <input type="checkbox" id="toggle-montage" onchange="updatePricesDynamic()" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-300"/>
+                            <label for="toggle-montage" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-600 cursor-pointer transition-colors duration-300"></label>
+                        </div>
+                    </div>
+                    
+                    <!-- Toggle 2 -->
+                    <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-wifi"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-white">Автоматика (Мотор + Пульт) (+3500 ₴)</p>
+                                <p class="text-sm text-gray-400">Керування з пульта або смартфона (Smart Home).</p>
+                            </div>
+                        </div>
+                        <div class="relative inline-block w-14 mr-2 align-middle select-none transition duration-200 ease-in shrink-0">
+                            <input type="checkbox" id="toggle-auto" onchange="updatePricesDynamic()" class="toggle-checkbox absolute block w-7 h-7 rounded-full bg-white border-4 appearance-none cursor-pointer transition-transform duration-300"/>
+                            <label for="toggle-auto" class="toggle-label block overflow-hidden h-7 rounded-full bg-gray-600 cursor-pointer transition-colors duration-300"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lead Capture Form -->
+            <div class="max-w-xl mx-auto glass-card p-10 relative overflow-hidden" id="lead-form">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500 rounded-full filter blur-[60px] opacity-20 pointer-events-none"></div>
+                <h3 class="text-2xl md:text-3xl font-bold text-center mb-3">Зафіксувати розрахунок</h3>
+                <p class="text-gray-400 text-center mb-8">Залиште заявку зараз і наш менеджер зателефонує, щоб допомогти з вибором кольору. <br><span class="text-emerald-400 font-medium">Бонус: -5% знижки на монтаж при підтвердженні сьогодні.</span></p>
+                
+                <form onsubmit="event.preventDefault(); submitForm();" class="space-y-5 relative z-10">
+                    <div>
+                        <input type="text" placeholder="Ваше ім'я" required class="w-full px-6 py-4 rounded-xl input-antigravity text-lg">
+                    </div>
+                    <div>
+                        <input type="tel" placeholder="Номер телефону (+380...)" required class="w-full px-6 py-4 rounded-xl input-antigravity text-lg">
+                    </div>
+                    <button type="submit" class="w-full btn-glow py-5 rounded-xl font-bold text-lg uppercase tracking-wider mt-4">
+                        Обговорити замовлення
+                    </button>
+                    <p class="text-xs text-center text-gray-500 mt-4">Натискаючи кнопку, ви погоджуєтесь з політикою конфіденційності.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/50 py-10 text-center relative z-10">
+        <div class="container mx-auto px-6">
+            <div class="text-2xl font-bold tracking-tighter flex items-center justify-center gap-2 mb-6 opacity-80">
+                <i class="fa-solid fa-layer-group text-emerald-400"></i>
+                <span>Aero<span class="font-light">Blinds</span></span>
+            </div>
+            <p class="text-gray-500 text-sm mb-4">© 2024 AeroBlinds. Усі права захищено.</p>
+            <div class="flex justify-center gap-6 text-sm text-gray-400">
+                <a href="#" class="hover:text-emerald-400 transition">Політика конфіденційності</a>
+                <a href="#" class="hover:text-emerald-400 transition">Договір оферти</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Calculator Logic Script -->
+    <script>
+        // Data Models
+        const BASE_PRICES = {
+            b25: 1500, // Bamboo 25mm UAH/sq.m
+            w25: 2000, // Wood 25mm UAH/sq.m
+            b50: 1800, // Bamboo 50mm UAH/sq.m
+            w50: 2500  // Wood 50mm UAH/sq.m
+        };
+        const ADDON_PRICES = {
+            montage: 500, // Fixed
+            auto: 3500    // Fixed
+        };
+        let currentAreaSqM = 0;
+
+        function calculatePrice() {
+            const wInput = document.getElementById('calc-width').value;
+            const hInput = document.getElementById('calc-height').value;
+            
+            const w = parseFloat(wInput);
+            const h = parseFloat(hInput);
+            
+            if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) {
+                alert('Будь ласка, введіть коректні розміри ширини та висоти.');
+                return;
+            }
+            
+            // Calculate Area in square meters
+            let area = (w / 100) * (h / 100);
+            
+            // Apply minimum order area logic to prevent loss on micro windows
+            if (area < 0.5) {
+                area = 0.5;
+            }
+            currentAreaSqM = area;
+            
+            // Update UI Numbers
+            updatePricesDynamic();
+            
+            // Reveal the Results Section smoothly
+            const resSec = document.getElementById('results-section');
+            if (resSec.classList.contains('reveal-hidden')) {
+                resSec.classList.remove('reveal-hidden');
+                resSec.classList.add('reveal-prepare');
+                
+                // Force browser reflow to enable transition
+                void resSec.offsetWidth;
+                
+                resSec.classList.remove('reveal-prepare');
+                resSec.classList.add('reveal-active');
+            }
+            
+            // Scroll to results
+            setTimeout(() => {
+                resSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+
+        function updatePricesDynamic() {
+            if (currentAreaSqM === 0) return; // Prevent calc if no valid area
+            
+            const isMontage = document.getElementById('toggle-montage').checked;
+            const isAuto = document.getElementById('toggle-auto').checked;
+            
+            let extraCost = 0;
+            if (isMontage) extraCost += ADDON_PRICES.montage;
+            if (isAuto) extraCost += ADDON_PRICES.auto;
+            
+            // Animate Numbers function
+            animateValue("price-b25", parseInt(document.getElementById("price-b25").innerText), Math.round((currentAreaSqM * BASE_PRICES.b25) + extraCost), 400);
+            animateValue("price-w25", parseInt(document.getElementById("price-w25").innerText), Math.round((currentAreaSqM * BASE_PRICES.w25) + extraCost), 400);
+            animateValue("price-b50", parseInt(document.getElementById("price-b50").innerText), Math.round((currentAreaSqM * BASE_PRICES.b50) + extraCost), 400);
+            animateValue("price-w50", parseInt(document.getElementById("price-w50").innerText), Math.round((currentAreaSqM * BASE_PRICES.w50) + extraCost), 400);
+        }
+
+        // Helper for animating number counter
+        function animateValue(id, start, end, duration) {
+            if (start === end) return;
+            let obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                // Ease out cubic
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                obj.innerHTML = Math.floor(easeProgress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    obj.innerHTML = end; // Ensure exact final value
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Form submission mock
+        function submitForm() {
+            alert('Дякуємо! Ваша заявка успішно відправлена. Наш менеджер зателефонує вам протягом 15 хвилин.');
+            // Here you would normally use fetch() or XMLHttpRequest to send data to your CRM or backend
+        }
+    </script>
+</body>
+</html>
+```eof
+
+Ваш лендінг з калькулятором готовий! Я розробив його з використанням концепції дизайну **«Антигравітація»** (Antigravity): темна преміальна тема, ефекти матового скла (Glassmorphism), фонові атмосферні сфери, що пульсують, та елементи, які плавно зависають у повітрі за допомогою CSS-анімацій. 
+
+**Що реалізовано у коді:**
+1. **Інтерактивний калькулятор:** Застосовано правильну математику (конвертація см у м², врахування мінімальної квадратури 0.5 м²).
+2. **Динамічне оновлення:** Результати з'являються з красивою анімацією. При увімкненні тумблерів «Монтаж» або «Автоматика», ціни в усіх чотирьох картках миттєво перераховуються з візуальним ефектом "лічильника".
+3. **UX для лідогенерації:** Сайт ідеально оптимізований як односторінкова воронка. Від інструкції з виміру до пропозиції знижки в кінцевій формі збору контактів.
+
+Просто збережіть цей код у файл `.html` і відкрийте в браузері. Дайте знати, якщо захочете змінити базові ціни в калькуляторі або додати нові функції!
