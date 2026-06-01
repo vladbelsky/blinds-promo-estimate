@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
+        /* Приховання скроллбару для каруселі */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
         /* Base Blue Antigravity Theme Styles */
         body {
             font-family: 'Montserrat', sans-serif;
@@ -201,21 +205,45 @@
                 </div>
             </div>
             
-            <div class="relative floating-delay">
-                <!-- Video Carousel wrapper -->
-                <div class="glass-card p-3 rounded-[2.5rem] overflow-hidden relative group aspect-[4/5] shadow-[0_0_40px_rgba(59,130,246,0.3)]">
-                    <video id="hero-video" autoplay muted playsinline class="w-full h-full object-cover rounded-[2rem] transition-opacity duration-500 opacity-100">
-                        <source src="bg-video.mp4" type="video/mp4">
-                        Ваш браузер не підтримує відео.
-                    </video>
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none rounded-[2rem]"></div>
-                    <div class="absolute bottom-8 left-8 text-white font-medium pointer-events-none">
-                        <p class="text-2xl font-bold">Натуральне дерево</p>
-                        <p class="text-sm text-blue-300">Ламель 50 мм</p>
+           <div class="relative floating-delay">
+                <div class="glass-card p-3 rounded-[2.5rem] shadow-[0_0_40px_rgba(59,130,246,0.3)]">
+                    <div class="relative rounded-[2rem] overflow-hidden aspect-[4/5]">
+                        
+                        <div id="video-carousel" class="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar">
+                            <div class="w-full h-full flex-shrink-0 snap-center relative">
+                                <video muted playsinline class="carousel-video w-full h-full object-cover"><source src="bg-video-1.mp4" type="video/mp4"></video>
+                            </div>
+                            <div class="w-full h-full flex-shrink-0 snap-center relative">
+                                <video muted playsinline class="carousel-video w-full h-full object-cover"><source src="bg-video-2.mp4" type="video/mp4"></video>
+                            </div>
+                            <div class="w-full h-full flex-shrink-0 snap-center relative">
+                                <video muted playsinline class="carousel-video w-full h-full object-cover"><source src="bg-video-3.mp4" type="video/mp4"></video>
+                            </div>
+                            <div class="w-full h-full flex-shrink-0 snap-center relative">
+                                <video muted playsinline class="carousel-video w-full h-full object-cover"><source src="bg-video-4.mp4" type="video/mp4"></video>
+                            </div>
+                            <div class="w-full h-full flex-shrink-0 snap-center relative">
+                                <video muted playsinline class="carousel-video w-full h-full object-cover"><source src="bg-video-5.mp4" type="video/mp4"></video>
+                            </div>
+                        </div>
+
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
+                        <div class="absolute bottom-8 left-8 text-white font-medium pointer-events-none z-10">
+                            <p class="text-2xl font-bold">Натуральне дерево</p>
+                            <p class="text-sm text-blue-300">Ламель 50 мм</p>
+                        </div>
+
+                        <div id="carousel-dots" class="absolute bottom-8 right-8 flex gap-2 z-10 pointer-events-none">
+                            <div class="w-2 h-2 rounded-full bg-white opacity-100 transition-opacity"></div>
+                            <div class="w-2 h-2 rounded-full bg-white opacity-40 transition-opacity"></div>
+                            <div class="w-2 h-2 rounded-full bg-white opacity-40 transition-opacity"></div>
+                            <div class="w-2 h-2 rounded-full bg-white opacity-40 transition-opacity"></div>
+                            <div class="w-2 h-2 rounded-full bg-white opacity-40 transition-opacity"></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- Calculator Section -->
@@ -431,23 +459,48 @@
         };
 
         // Video Carousel Logic
-        const videos = ['bg-video.mp4', 'bg-video-2.mp4', 'bg-video-3.mp4', 'bg-video-4.mp4', 'bg-video-5.mp4'];
-        let currentVideoIndex = 0;
-        const heroVideo = document.getElementById('hero-video');
+        const carousel = document.getElementById('video-carousel');
+        if (carousel) {
+            const videos = carousel.querySelectorAll('.carousel-video');
+            const dots = document.getElementById('carousel-dots').children;
 
-        if (heroVideo) {
-            heroVideo.addEventListener('ended', () => {
-                heroVideo.classList.remove('opacity-100');
-                heroVideo.classList.add('opacity-0');
-                
-                setTimeout(() => {
-                    currentVideoIndex = (currentVideoIndex + 1) % videos.length;
-                    heroVideo.src = videos[currentVideoIndex];
-                    heroVideo.play();
-                    
-                    heroVideo.classList.remove('opacity-0');
-                    heroVideo.classList.add('opacity-100');
-                }, 500);
+            // Запуск першого відео
+            if(videos.length > 0) videos[0].play();
+
+            // Відстеження свайпу/скролу
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const index = Array.from(videos).indexOf(entry.target);
+                        
+                        // Оновлення точок
+                        Array.from(dots).forEach((dot, i) => {
+                            dot.classList.toggle('opacity-100', i === index);
+                            dot.classList.toggle('opacity-40', i !== index);
+                        });
+
+                        // Відтворення поточного, пауза інших
+                        videos.forEach((vid, i) => {
+                            if (i === index) {
+                                vid.currentTime = 0;
+                                vid.play();
+                            } else {
+                                vid.pause();
+                            }
+                        });
+                    }
+                });
+            }, { root: carousel, threshold: 0.6 });
+
+            videos.forEach(vid => observer.observe(vid));
+
+            // Автоперемикання після завершення відео
+            videos.forEach((vid, index) => {
+                vid.addEventListener('ended', () => {
+                    const nextIndex = (index + 1) % videos.length;
+                    const scrollPosition = carousel.clientWidth * nextIndex;
+                    carousel.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                });
             });
         }
 
