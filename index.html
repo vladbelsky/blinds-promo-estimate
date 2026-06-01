@@ -202,10 +202,9 @@
             </div>
             
             <div class="relative floating-delay">
-                <!-- Video from Instagram styling wrapper -->
+                <!-- Video Carousel wrapper -->
                 <div class="glass-card p-3 rounded-[2.5rem] overflow-hidden relative group aspect-[4/5] shadow-[0_0_40px_rgba(59,130,246,0.3)]">
-                    <!-- ЗАМІНІТЬ bg-video.mp4 на ваш файл, завантажений з інстаграм -->
-                    <video autoplay loop muted playsinline class="w-full h-full object-cover rounded-[2rem]">
+                    <video id="hero-video" autoplay muted playsinline class="w-full h-full object-cover rounded-[2rem] transition-opacity duration-500 opacity-100">
                         <source src="bg-video.mp4" type="video/mp4">
                         Ваш браузер не підтримує відео.
                     </video>
@@ -225,11 +224,11 @@
             <div class="max-w-4xl mx-auto glass-card p-8 md:p-14 relative border border-blue-500/20 shadow-[0_0_50px_rgba(37,99,235,0.15)]">
                 <div class="absolute -top-10 -left-10 w-40 h-40 bg-blue-600 rounded-full filter blur-[100px] opacity-30 pointer-events-none"></div>
                 
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Розрахунок вартості</h2>
+                <h2 id="calc-title" class="text-3xl md:text-4xl font-bold mb-4 text-center">Розрахунок вартості</h2>
                 
                 <!-- Anchor link to instructions -->
                 <div class="text-center mb-10">
-                    <a href="#instructions" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm md:text-base font-medium transition group">
+                    <a href="#instructions" id="measure-link" class="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm md:text-base font-medium transition-colors duration-1000 group">
                         <i class="fa-solid fa-circle-question group-hover:scale-110 transition"></i>
                         Як правильно зробити заміри? (Дивитись відео)
                     </a>
@@ -415,7 +414,7 @@
                 <i class="fa-solid fa-layer-group text-blue-500"></i>
                 <span>Blue<span class="font-light">Blinds</span></span>
             </div>
-            <p class="text-gray-500 text-sm mb-4">© 2024 BlueBlinds. Усі права захищено.</p>
+            <p class="text-gray-500 text-sm mb-4">© 2026 BlueBlinds. Усі права захищено.</p>
         </div>
     </footer>
 
@@ -430,6 +429,54 @@
             totalArea: 0,
             count: 1
         };
+
+        // Video Carousel Logic
+        const videos = ['bg-video.mp4', 'bg-video-2.mp4', 'bg-video-3.mp4', 'bg-video-4.mp4', 'bg-video-5.mp4'];
+        let currentVideoIndex = 0;
+        const heroVideo = document.getElementById('hero-video');
+
+        if (heroVideo) {
+            heroVideo.addEventListener('ended', () => {
+                heroVideo.classList.remove('opacity-100');
+                heroVideo.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+                    heroVideo.src = videos[currentVideoIndex];
+                    heroVideo.play();
+                    
+                    heroVideo.classList.remove('opacity-0');
+                    heroVideo.classList.add('opacity-100');
+                }, 500);
+            });
+        }
+
+        // Highlight Measure Link on Scroll Logic
+        const calcTitle = document.getElementById('calc-title');
+        const measureLink = document.getElementById('measure-link');
+
+        if (calcTitle && measureLink) {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50% 0px', // Trigger when target is in the middle of the screen
+                threshold: 0
+            };
+
+            const titleObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            // Зміна кольору на помаранчевий
+                            measureLink.classList.remove('text-cyan-400', 'hover:text-cyan-300');
+                            measureLink.classList.add('text-orange-500', 'hover:text-orange-400');
+                        }, 2500); // Затримка 2.5 секунди
+                        observer.disconnect(); // Виконуємо лише один раз
+                    }
+                });
+            }, observerOptions);
+
+            titleObserver.observe(calcTitle);
+        }
 
         // UI Add Window
         function addWindow() {
@@ -556,7 +603,6 @@
         }
 
         // GOOGLE SHEETS FORM SUBMISSION
-        // ❗❗ ВСТАВТЕ СЮДИ ВАШ URL ВІД GOOGLE APPS SCRIPT ЗАМІСТЬ ПОТОЧНОГО ❗❗
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwmD0333Yw5RhkxTrTyiWinBlIFtmCfdGPsRB3Ev1cjKaSTYZmxot5IRVCwYIur1K4ouA/exec';
 
         function submitForm(e) {
